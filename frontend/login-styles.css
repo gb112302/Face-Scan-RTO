@@ -1,0 +1,214 @@
+/* ===================================
+   Feature Navigation Menu
+   =================================== */
+.feature-navigation {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+    min-width: 200px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.nav-header {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.nav-header h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.nav-item:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: var(--primary-color);
+    transform: translateX(-4px);
+}
+
+.nav-icon {
+    font-size: 1.25rem;
+}
+
+.nav-label {
+    flex: 1;
+}
+
+/* ===================================
+   Login Notification
+   =================================== */
+.login-notification {
+    position: fixed;
+    top: 100px;
+    right: 30px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all var(--transition-normal);
+}
+
+.login-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.login-notification.success {
+    background: var(--gradient-success);
+}
+
+.login-notification.error {
+    background: var(--gradient-secondary);
+}
+
+.login-notification .notification-icon {
+    font-size: 1.5rem;
+}
+
+.login-notification .notification-text {
+    font-size: 1rem;
+}
+
+/* ===================================
+   Officer Info Styles
+   =================================== */
+.officer-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: var(--radius-md);
+}
+
+.officer-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.logout-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--danger-color);
+    border-radius: var(--radius-sm);
+    color: var(--danger-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.logout-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* ===================================
+   Login Button Styles
+   =================================== */
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-family: inherit;
+    box-shadow: var(--shadow-md);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.login-btn span:first-child {
+    font-size: 1.125rem;
+}
+
+/* ===================================
+   Responsive Adjustments
+   =================================== */
+@media (max-width: 768px) {
+    .feature-navigation {
+        right: 10px;
+        top: 80px;
+        min-width: 160px;
+        padding: var(--spacing-sm);
+    }
+
+    .nav-item {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.75rem;
+    }
+
+    .nav-icon {
+        font-size: 1rem;
+    }
+
+    .login-notification {
+        right: 10px;
+        top: 80px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}

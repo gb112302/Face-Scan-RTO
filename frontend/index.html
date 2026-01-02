@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="RTO Face Scan - Real-time driver identification system for Regional Transport Office and traffic police in India">
+    <meta name="keywords" content="RTO, face scan, driver identification, traffic police, India">
+    <title>RTO Face Scan - Identification System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login-styles.css">
+    <link rel="stylesheet" href="login-page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="login-mode">
+    <div class="app-container">
+        <!-- Login Landing Page -->
+        <div class="login-landing-page" id="loginLandingPage">
+            <!-- Video Background -->
+            <div class="video-overlay"></div>
+            <video id="loginVideo" autoplay muted loop playsinline poster="assets/placeholder.jpg">
+                <source src="background.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="login-logo">🚔</div>
+                    <h1 class="login-title">RTO Face Scan</h1>
+                    <p class="login-subtitle">Identification System</p>
+                </div>
+
+                <div class="login-content-grid">
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label class="form-label" for="landingUsername">Username</label>
+                            <input type="text" id="landingUsername" class="form-input" placeholder="Enter your username"
+                                autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="landingPassword">Password</label>
+                            <input type="password" id="landingPassword" class="form-input"
+                                placeholder="Enter your password" autocomplete="current-password">
+                        </div>
+
+                        <button id="landingLoginBtn" class="login-submit-btn">
+                            <span>🔐</span>
+                            <span>Login to Dashboard</span>
+                        </button>
+                    </div>
+
+                    <div class="login-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <div class="biometric-section">
+                        <h3>Biometric Authentication</h3>
+                        <div class="fingerprint-display" id="landingFingerprint">
+                            <span>👆</span>
+                        </div>
+                        <p class="biometric-text">Tap to scan fingerprint</p>
+                        <button id="landingBiometricBtn" class="biometric-btn">
+                            <span>🔐</span>
+                            <span>Use Biometric Login</span>
+                        </button>
+
+                        <p class="login-footer-text" style="margin-top: var(--spacing-md);">
+                            Don't have an account? <a href="#" id="showRegisterLink"
+                                style="color: var(--primary-light); text-decoration: none; font-weight: 600;">Register
+                                here</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Header (Hidden initially) -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🚔</div>
+                    <div class="logo-text">
+                        <h1 data-translate="appTitle">RTO Face Scan</h1>
+                        <p data-translate="appSubtitle">Identification System</p>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <!-- City Selector (Custom Trigger) -->
+                    <div class="city-selector" onclick="openCityModal()">
+                        <span class="city-icon">📍</span>
+                        <span class="current-city-text" id="currentLocationText" data-translate="mehsana">Mehsana</span>
+                        <span class="checksum-down">▼</span>
+                    </div>
+
+                    <!-- Online/Offline Status -->
+                    <div class="online-status" id="onlineStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text" data-translate="online">Online</span>
+                    </div>
+
+
+                    <!-- Identity Search (Separated) -->
+                    <div class="identity-search-container" id="headerSearchSection" style="display: none;">
+                        <input type="text" id="identitySearchInput" placeholder="Search ID..."
+                            data-translate="searchById">
+                        <button id="identitySearchBtn" class="search-btn">🔍</button>
+                    </div>
+
+                    <!-- Features Dropdown -->
+                    <div class="features-dropdown" id="featuresDropdown">
+                        <button class="features-btn" id="featuresBtn">
+                            <span class="features-icon">⚡</span>
+                            <span data-translate="features">Features</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="features-menu" id="featuresMenu">
+
+                            <button class="menu-btn" id="showCameraBtn">
+                                <span class="feature-icon">📷</span>
+                                <span data-translate="camera">Camera</span>
+                            </button>
+                            <div class="menu-divider"></div>
+                            <div class="feature-item">
+                                <div class="feature-label">
+                                    <span class="feature-icon">🤖</span>
+                                    <span data-translate="autoCapture">Auto-Capture</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="autoCaptureToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-label">
+                                    <span class="feature-icon">🆔</span>
+                                    <span data-translate="citizenInfo">Citizen Info</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="citizenModeToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-label">
+                                    <span class="feature-icon">📝</span>
+                                    <span data-translate="autoGenerateEChallan">Auto-Generate</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="autoGenerateToggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="menu-divider"></div>
+                            <button class="menu-btn" id="showAnalyticsBtn">
+                                <span class="feature-icon">📊</span>
+                                <span data-translate="analyticsDashboard">Analytics</span>
+                            </button>
+                            <button class="menu-btn" id="showDocumentsBtn">
+                                <span class="feature-icon">📄</span>
+                                <span data-translate="documentVerification">Documents</span>
+                            </button>
+                            <button class="menu-btn" id="showVehicleBtn">
+                                <span class="feature-icon">🚗</span>
+                                <span data-translate="vehicleRecognition">Vehicle Scan</span>
+                            </button>
+                            <button class="menu-btn" id="showMapBtn">
+                                <span class="feature-icon">🗺️</span>
+                                <span data-translate="violationMap">Violation Map</span>
+                            </button>
+                            <div class="menu-divider"></div>
+                            <button class="menu-btn" onclick="window.open('presentation.html', '_blank')">
+                                <span class="feature-icon">📊</span>
+                                <span>Project Presentation</span>
+                            </button>
+                            <button class="menu-btn clear-all-btn" id="clearAllSectionsBtn">
+                                <span class="feature-icon">🧹</span>
+                                <span data-translate="clearAll">Clear All</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="notification-bell" id="notificationBell">
+                        <span class="bell-icon">🔔</span>
+                        <span class="notification-count" id="notificationCount">0</span>
+                    </div>
+
+                    <!-- Officer Info (Logout) -->
+                    <div class="officer-info" id="officerInfo" style="display: none;">
+                        <span class="officer-name" id="headerOfficerName">Officer</span>
+                        <button id="logoutBtn" class="logout-btn">Logout</button>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button id="loginBtn" class="login-btn">
+                        <span>🔐</span>
+                        <span data-translate="login">Login</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content (Hidden until login) -->
+        <main class="main-content" id="mainContent" style="display: none;">
+            <!-- Camera Section -->
+            <section class="camera-section" id="cameraSection">
+                <div class="camera-container">
+                    <div class="camera-header">
+                        <h2>Live Camera Feed</h2>
+                        <div class="detection-indicator" id="detectionIndicator">
+                            <span class="indicator-dot"></span>
+                            <span id="detectionText">No face detected</span>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <video id="videoElement" autoplay muted playsinline></video>
+                        <canvas id="overlay"></canvas>
+                        <div class="scanning-line" id="scanningLine"></div>
+                    </div>
+
+                    <!-- Camera Source Selector -->
+                    <div class="camera-source-section">
+                        <div class="source-header">
+                            <span class="source-icon">📹</span>
+                            <h3>Camera Source</h3>
+                        </div>
+                        <select id="cameraSourceSelect" class="camera-source-select">
+                            <option value="device">📱 Device Camera</option>
+                            <option value="rto-main">🚦 RTO Main Gate Camera</option>
+                            <option value="rto-highway">🛣️ Highway Surveillance Camera</option>
+                            <option value="rto-junction">🚥 Traffic Junction Camera</option>
+                            <option value="rto-toll">💰 Toll Plaza Camera</option>
+                            <option value="custom">🔗 Custom IP/RTSP Camera</option>
+                        </select>
+
+                        <!-- Custom Camera URL Input (hidden by default) -->
+                        <div id="customCameraInput" class="custom-camera-input" style="display: none;">
+                            <input type="text" id="customCameraUrl" placeholder="Enter RTSP/HTTP camera URL"
+                                class="camera-url-input">
+                            <button id="connectCustomCamera" class="btn btn-secondary btn-small">
+                                <span>🔌</span>
+                                <span>Connect</span>
+                            </button>
+                        </div>
+
+                        <!-- Available Devices Dropdown (for device camera) -->
+                        <div id="deviceCameraSelect" class="device-camera-select">
+                            <select id="videoDeviceSelect" class="device-select">
+                                <option value="">Loading cameras...</option>
+                            </select>
+                        </div>
+
+                        <!-- Camera Info Display -->
+                        <div class="camera-info" id="cameraInfo">
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value" id="cameraStatus">Not Connected</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Resolution:</span>
+                                <span class="info-value" id="cameraResolution">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">FPS:</span>
+                                <span class="info-value" id="cameraFps">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="camera-controls">
+                        <button id="toggleCamera" class="btn btn-primary">
+                            <span class="btn-icon">📷</span>
+                            <span>Start Camera</span>
+                        </button>
+                        <button id="captureBtn" class="btn btn-secondary" disabled>
+                            <span class="btn-icon">📸</span>
+                            <span>Capture</span>
+                        </button>
+                    </div>
+
+                    <!-- Demo Mode Controls -->
+                    <div class="demo-controls">
+                        <div class="demo-header">
+                            <span class="demo-badge">🎭 DEMO MODE</span>
+                            <span class="demo-text">Select a driver to test memo generation</span>
+                        </div>
+                        <select id="demoDriverSelect" class="demo-select">
+                            <option value="">-- Select Driver for Demo --</option>
+                            <option value="GJ001">GOVIND CHAUDHARI (GJ 02 AB 1234)</option>
+                            <option value="GJ002">PRAYAN CHAUDHARI (GJ 05 CD 5678)</option>
+                            <option value="GJ003">KRIS CHAUDHARY (GJ 01 EF 9012)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+            <!-- Camera Section -->
+
+
+            <!-- Driver Information Section -->
+            <section class="info-section">
+                <div class="info-container">
+                    <div class="info-header">
+                        <h2>Driver Information</h2>
+                        <div class="confidence-badge" id="confidenceBadge" style="display: none;">
+                            <span>Match: </span>
+                            <span id="confidenceScore">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- No Match State -->
+                    <div class="no-match-state" id="noMatchState">
+                        <div class="no-match-icon">🔍</div>
+                        <h3>No Driver Detected</h3>
+                        <p>Position a face in front of the camera to scan and identify the driver</p>
+                    </div>
+
+                    <!-- Driver Details Card -->
+                    <div class="driver-card" id="driverCard" style="display: none;">
+                        <div class="driver-photo-section">
+                            <div class="driver-photo">
+                                <img id="driverPhoto" src="" alt="Driver Photo">
+                            </div>
+                            <div class="driver-status">
+                                <span class="status-label" id="licenseStatus">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="driver-details">
+                            <div class="detail-group">
+                                <h3 id="driverName">-</h3>
+                                <p class="driver-id" id="driverId">ID: -</p>
+                            </div>
+
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">License Number</span>
+                                    <span class="detail-value" id="licenseNumber">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">License Expiry</span>
+                                    <span class="detail-value" id="licenseExpiry">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Vehicle Number</span>
+                                    <span class="detail-value" id="vehicleNumber">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Vehicle Type</span>
+                                    <span class="detail-value" id="vehicleType">-</span>
+                                </div>
+                                <div class="detail-item full-width">
+                                    <span class="detail-label">Address</span>
+                                    <span class="detail-value" id="address">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Phone</span>
+                                    <span class="detail-value" id="phone">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Memo/E-Challan Section -->
+            <section class="memo-section-container" id="memoSection" style="display: none;">
+                <div class="memo-container">
+                    <div class="memo-header-section">
+                        <h2>Generate Traffic E-Challan</h2>
+                        <p class="memo-subtitle">Select violations and generate official RTO memo</p>
+                    </div>
+
+                    <!-- Officer Details -->
+                    <div class="officer-details-section">
+                        <h3>Officer Details</h3>
+                        <div class="officer-inputs">
+                            <div class="input-group">
+                                <label for="officerName">Officer Name</label>
+                                <input type="text" id="officerName" placeholder="Enter officer name"
+                                    value="Traffic Officer">
+                            </div>
+                            <div class="input-group">
+                                <label for="officerBadge">Badge Number</label>
+                                <input type="text" id="officerBadge" placeholder="Enter badge number" value="TO-001">
+                            </div>
+                            <div class="input-group full-width">
+                                <label for="violationLocation">Violation Location</label>
+                                <input type="text" id="violationLocation" placeholder="Enter location"
+                                    value="Mehsana, Gujarat">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Violations Selection -->
+                    <div class="violations-selection-section">
+                        <h3>Select Traffic Violations</h3>
+                        <div id="violationsList" class="violations-list">
+                            <!-- Violations will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <div class="memo-actions">
+                        <div class="auto-generate-toggle">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="autoGenerateToggle" class="toggle-checkbox">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">🤖 Auto-Generate E-Challan on Detection</span>
+                            </label>
+                            <p class="toggle-description">When enabled, e-challan will be automatically generated with
+                                common violations</p>
+                        </div>
+                        <button id="generateMemoBtn" class="btn btn-primary btn-large">
+                            <span class="btn-icon">📋</span>
+                            <span>Generate E-Challan</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Analytics Dashboard Section -->
+        <section class="analytics-section" id="analyticsSection" style="display: none;">
+            <div class="analytics-container">
+                <div class="analytics-header">
+                    <h2 data-translate="analyticsDashboard">Analytics Dashboard</h2>
+                    <button id="refreshAnalytics" class="btn btn-secondary">
+                        <span>🔄</span>
+                        <span data-translate="refresh">Refresh</span>
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <h3 id="todayViolations">0</h3>
+                            <p data-translate="todayStats">Today's Statistics</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <h3 id="weekViolations">0</h3>
+                            <p data-translate="weekStats">This Week</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3 id="totalFinesCollected">₹0</h3>
+                            <p data-translate="totalFines">Total Fines</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👮</div>
+                        <div class="stat-content">
+                            <h3 id="activeOfficers">0</h3>
+                            <p>Active Officers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 data-translate="violationsByType">Violations by Type</h3>
+                        <canvas id="violationTypeChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 data-translate="violationsByTime">Violations by Time</h3>
+                        <canvas id="violationTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Violation History Panel -->
+        <div class="violation-history-panel" id="violationHistoryPanel" style="display: none;">
+            <div class="history-header">
+                <h3 data-translate="violationHistory">Violation History</h3>
+                <button id="closeHistoryPanel" class="close-btn">&times;</button>
+            </div>
+            <div class="history-stats">
+                <div class="history-stat">
+                    <span class="stat-label" data-translate="totalViolations">Total Violations</span>
+                    <span class="stat-value" id="historyTotalViolations">0</span>
+                </div>
+                <div class="history-stat">
+                    <span class="stat-label" data-translate="totalFines">Total Fines</span>
+                    <span class="stat-value" id="historyTotalFines">₹0</span>
+                </div>
+                <div class="history-stat">
+                    <span class="stat-label" data-translate="paidAmount">Paid Amount</span>
+                    <span class="stat-value" id="historyPaidAmount">₹0</span>
+                </div>
+                <div class="history-stat">
+                    <span class="stat-label" data-translate="pendingAmount">Pending Amount</span>
+                    <span class="stat-value" id="historyPendingAmount">₹0</span>
+                </div>
+            </div>
+            <div class="history-timeline" id="historyTimeline">
+                <!-- Timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Document Verification Section -->
+        <section class="document-section" id="documentSection" style="display: none;">
+            <div class="document-container">
+                <h2 data-translate="documentVerification">Document Verification</h2>
+                <div class="document-grid">
+                    <div class="document-card">
+                        <div class="document-icon">📄</div>
+                        <h3 data-translate="drivingLicense">Driving License</h3>
+                        <div class="upload-zone" id="licenseUploadZone">
+                            <input type="file" id="licenseUpload" accept="image/*,.pdf" hidden>
+                            <p data-translate="dragDropFile">Drag & drop file here or click to upload</p>
+                        </div>
+                        <div class="verification-status" id="licenseStatus">
+                            <span class="status-icon">⏳</span>
+                            <span>Pending</span>
+                        </div>
+                        <button id="verifyLicense" class="btn btn-primary" disabled>
+                            <span data-translate="verify">Verify</span>
+                        </button>
+                    </div>
+                    <div class="document-card">
+                        <div class="document-icon">🛡️</div>
+                        <h3 data-translate="insurance">Insurance</h3>
+                        <div class="upload-zone" id="insuranceUploadZone">
+                            <input type="file" id="insuranceUpload" accept="image/*,.pdf" hidden>
+                            <p data-translate="dragDropFile">Drag & drop file here or click to upload</p>
+                        </div>
+                        <div class="verification-status" id="insuranceStatus">
+                            <span class="status-icon">⏳</span>
+                            <span>Pending</span>
+                        </div>
+                        <button id="verifyInsurance" class="btn btn-primary" disabled>
+                            <span data-translate="verify">Verify</span>
+                        </button>
+                    </div>
+                    <div class="document-card">
+                        <div class="document-icon">📋</div>
+                        <h3 data-translate="registration">Registration</h3>
+                        <div class="upload-zone" id="registrationUploadZone">
+                            <input type="file" id="registrationUpload" accept="image/*,.pdf" hidden>
+                            <p data-translate="dragDropFile">Drag & drop file here or click to upload</p>
+                        </div>
+                        <div class="verification-status" id="registrationStatus">
+                            <span class="status-icon">⏳</span>
+                            <span>Pending</span>
+                        </div>
+                        <button id="verifyRegistration" class="btn btn-primary" disabled>
+                            <span data-translate="verify">Verify</span>
+                        </button>
+                    </div>
+                    <!-- Govt ID Card -->
+                    <div class="document-card">
+                        <div class="document-icon">🆔</div>
+                        <h3 data-translate="govtIdVerification">Govt ID Verification</h3>
+                        <div class="upload-zone" id="govtIdUploadZone">
+                            <input type="file" id="govtIdUpload" accept="image/*" hidden>
+                            <p data-translate="dragDropFile">Drag & drop file here or click to upload</p>
+                        </div>
+                        <div class="verification-status" id="govtIdStatus">
+                            <span class="status-icon">⏳</span>
+                            <span>Pending</span>
+                        </div>
+                        <button id="verifyGovtId" class="btn btn-primary" disabled>
+                            <span data-translate="verifyId">Verify ID</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vehicle Recognition Section -->
+        <section class="vehicle-section" id="vehicleSection" style="display: none;">
+            <div class="vehicle-container">
+                <h2 data-translate="vehicleRecognition">Vehicle Recognition</h2>
+                <div class="vehicle-grid">
+                    <div class="vehicle-camera">
+                        <h3 data-translate="licensePlate">License Plate Detection</h3>
+                        <div class="plate-upload-zone" id="plateUploadZone">
+                            <input type="file" id="plateUpload" accept="image/*" hidden>
+                            <p>Upload vehicle image</p>
+                        </div>
+                        <div class="plate-preview" id="platePreview"></div>
+                        <button id="detectPlate" class="btn btn-primary" disabled>
+                            <span>🔍</span>
+                            <span data-translate="detectPlate">Detect Plate</span>
+                        </button>
+                    </div>
+                    <div class="vehicle-info-display" id="vehicleInfoDisplay">
+                        <h3 data-translate="vehicleInfo">Vehicle Information</h3>
+                        <div class="vehicle-details" id="vehicleDetails">
+                            <p>No vehicle detected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section" id="mapSection" style="display: none;">
+            <div class="map-container-wrapper">
+                <div class="map-header">
+                    <h2 data-translate="violationMap">Violation Map</h2>
+                    <div class="map-controls">
+                        <button id="getCurrentLocationBtn" class="btn btn-secondary">
+                            <span>📍</span>
+                            <span data-translate="currentLocation">Current Location</span>
+                        </button>
+                        <button id="showHeatmapBtn" class="btn btn-secondary">
+                            <span>🔥</span>
+                            <span data-translate="violationHotspots">Violation Hotspots</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="violationMap" class="map-display"></div>
+            </div>
+        </section>
+
+        <!-- Payment Gateway Modal -->
+        <div id="paymentModal" class="modal">
+            <div class="modal-content payment-modal-content">
+                <div class="modal-header">
+                    <h2 data-translate="paymentGateway">Payment Gateway</h2>
+                    <button id="closePaymentModal" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-summary">
+                        <h3>Payment Summary</h3>
+                        <div class="payment-details">
+                            <div class="payment-row">
+                                <span>Challan Number:</span>
+                                <span id="paymentChallanNo">-</span>
+                            </div>
+                            <div class="payment-row">
+                                <span>Driver Name:</span>
+                                <span id="paymentDriverName">-</span>
+                            </div>
+                            <div class="payment-row total-row">
+                                <span>Total Amount:</span>
+                                <span id="paymentTotalAmount">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h3 data-translate="selectPaymentMethod">Select Payment Method</h3>
+                        <div class="payment-method-grid">
+                            <div class="payment-method-card" data-method="upi">
+                                <div class="method-icon">📱</div>
+                                <h4 data-translate="upiPayment">UPI Payment</h4>
+                                <p>Google Pay, PhonePe, Paytm</p>
+                            </div>
+                            <div class="payment-method-card" data-method="card">
+                                <div class="method-icon">💳</div>
+                                <h4 data-translate="cardPayment">Card Payment</h4>
+                                <p>Credit/Debit Card</p>
+                            </div>
+                            <div class="payment-method-card" data-method="netbanking">
+                                <div class="method-icon">🏦</div>
+                                <h4 data-translate="netBanking">Net Banking</h4>
+                                <p>All Major Banks</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-form" id="paymentForm" style="display: none;">
+                        <!-- Payment form will be populated based on selected method -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="processPaymentBtn" class="btn btn-primary btn-large" disabled>
+                        <span>💰</span>
+                        <span data-translate="processPayment">Process Payment</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Officer Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content login-modal-content">
+                <div class="modal-header">
+                    <h2 data-translate="officerLogin">Officer Login</h2>
+                    <button id="closeLoginModal" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="login-form">
+                        <div class="input-group">
+                            <label for="loginUsername" data-translate="username">Username</label>
+                            <input type="text" id="loginUsername" placeholder="Enter username">
+                        </div>
+                        <div class="input-group">
+                            <label for="loginPassword" data-translate="password">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Enter password">
+                        </div>
+
+                        <button id="loginSubmitBtn" class="btn btn-primary btn-large">
+                            <span data-translate="login">Login</span>
+                        </button>
+                    </div>
+                    <div class="login-divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="biometric-login">
+                        <h3 data-translate="biometricAuth">Biometric Authentication</h3>
+                        <div class="fingerprint-scanner" id="fingerprintScanner">
+                            <div class="fingerprint-icon">👆</div>
+                            <p data-translate="scanFingerprint">Scan Fingerprint</p>
+                        </div>
+                        <button id="biometricLoginBtn" class="btn btn-secondary">
+                            <span>🔐</span>
+                            <span>Use Biometric</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Dropdown -->
+        <div id="notificationDropdown" class="notification-dropdown" style="display: none;">
+            <div class="notification-header">
+                <h3 data-translate="notifications">Notifications</h3>
+                <button id="clearNotifications" class="clear-btn">Clear All</button>
+            </div>
+            <div class="notification-list" id="notificationList">
+                <div class="no-notifications">
+                    <p>No new notifications</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div id="memoModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Traffic E-Challan Preview</h2>
+                    <button id="closeMemoModal" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="memoContent">
+                        <!-- Memo content will be generated by JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="printMemoBtn" class="btn btn-primary">
+                        <span class="btn-icon">🖨️</span>
+                        <span>Print</span>
+                    </button>
+                    <button id="downloadMemoBtn" class="btn btn-secondary">
+                        <span class="btn-icon">💾</span>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p data-translate="footerText">RTO Face Scan System v1.0 | Application</p>
+            <p class="footer-note" data-translate="footerNote">⚠️ Not connected to real
+                RTO databases.</p>
+        </footer>
+    </div>
+
+    <!-- External Libraries -->
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Leaflet.js for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Face-api.js Library -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+    <!-- Translation System -->
+    <script src="translations.js"></script>
+
+    <!-- Login & Features Management -->
+    <script src="login-features.js"></script>
+
+    <!-- Application Script -->
+    <script defer src="app.js"></script>
+    <!-- City Selection Modal -->
+    <div id="citySelectionModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>📍 Select Location</h2>
+                <button class="close-modal" onclick="closeCityModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">District</label>
+                    <select id="districtSelect" class="form-input" onchange="handleDistrictChange()">
+                        <option value="" disabled selected>Select District</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City / Taluka</label>
+                    <select id="citySelect" class="form-input" disabled>
+                        <option value="" disabled selected>Select City</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCityModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmLocation()">Confirm Location</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
