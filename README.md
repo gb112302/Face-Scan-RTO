@@ -389,6 +389,6 @@ For support, bug reports, or feature requests:
 
 ---
 
-**Built with ❤️ for Indian Traffic Police & RTO**
+**Built ❤️ for Indian Traffic Police & RTO**
 
 _Last Updated: January 2, 2026_
